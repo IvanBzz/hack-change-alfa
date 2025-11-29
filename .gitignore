@@ -1,2 +1,4 @@
 .venv
 .zip
+# CatBoost training logs
+catboost_info/

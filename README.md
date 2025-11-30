@@ -7,6 +7,7 @@
 - **Гоова Алина** ([@nase_izum](https://t.me/nase_izum)) — Frontend Developer
 - **Глущенко Даниил** ([@pfioar](https://t.me/pfioar)) — Fullstack Developer / Team Lead
 
+ссылка на видео решения: https://drive.google.com/file/d/1404D9WB7YX2Q0gGvynXHvvdestelrCg2/view
 ---
 
 Сервис прогнозирования доходов клиентов на основе ML-модели (Ансамбль CatBoost + LightGBM). Разработан командой **"Титаник 2"** для хакатона Альфа-Банка 2025.

@@ -7,3 +7,4 @@ seaborn==0.13.2
 jupyter==1.1.1
 ipython==9.7.0
 optuna
+shap

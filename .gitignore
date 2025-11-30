@@ -2,3 +2,4 @@
 .zip
 # CatBoost training logs
 catboost_info/
+*.pkl

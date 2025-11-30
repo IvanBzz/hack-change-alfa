@@ -1,113 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alpha Bank | Прогноз доходов</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>Сервис прогнозирования доходов</h1>
-                </div>
-                <p class="tagline">Точный прогноз — уверенные решения для Альфа-Банка</p>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Search Section -->
-            <section class="search-section">
-                <div class="search-card">
-                    <h2>Поиск клиента</h2>
-                    <p>Введите ID клиента для анализа дохода и получения персонализированных предложений</p>
-                    
-                    <div class="search-input-group">
-                        <input 
-                            type="text" 
-                            id="clientIdInput" 
-                            placeholder="Введите ID клиента..."
-                            class="search-input"
-                        >
-                        <button id="searchBtn" class="search-button">
-                            <span class="btn-text">Найти</span>
-                            <div class="btn-loader hidden">
-                                <div class="spinner"></div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Results Section -->
-            <section class="results-section hidden" id="resultsSection">
-                <!-- Client Info -->
-                <div class="client-header">
-                    <h2>Клиент #<span id="clientIdDisplay">-</span></h2>
-                    <div class="client-status">
-                        <div class="status-badge active">Клиент найден</div>
-                    </div>
-                </div>
-
-                <!-- Income Prediction -->
-                <div class="prediction-card">
-                    <div class="card-header">
-                        <h3>Прогнозируемый доход</h3>
-                        <div class="accuracy-badge">Точность модели: 94%</div>
-                    </div>
-                    <div class="income-display">
-                        <div class="income-value" id="incomeValue">-</div>
-                        <div class="income-label">рублей в месяц</div>
-                    </div>
-                </div>
-
-                <!-- SHAP Analysis -->
-                <div class="analysis-card">
-                    <div class="card-header">
-                        <h3>Факторы влияния на прогноз</h3>
-                        <p class="card-subtitle">Наиболее значимые параметры, повлиявшие на расчет дохода</p>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="shapChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Recommendations -->
-                <div class="recommendations-card">
-                    <div class="card-header">
-                        <h3>Персонализированные предложения</h3>
-                        <p class="card-subtitle">Рекомендации на основе прогнозируемого дохода клиента</p>
-                    </div>
-                    <div class="recommendations-list" id="recommendationsList">
-                        <!-- Recommendations will be populated here -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- Error Section -->
-            <section class="error-section hidden" id="errorSection">
-                <div class="error-card">
-                    <div class="error-icon">⚠️</div>
-                    <h2>Клиент не найден</h2>
-                    <p>Клиент с указанным ID не зарегистрирован в системе. Пожалуйста, проверьте правильность введенного ID.</p>
-                    <button class="retry-button" onclick="hideError()">Попробовать снова</button>
-                </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Разработано командой "Титаник 2" для хакатона Альфа-Банка 2025</p>
-        </footer>
-    </div>
-
-    <script type="module" src="script.js"></script>
-</body>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

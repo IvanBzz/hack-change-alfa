@@ -1,6 +1,39 @@
+# System
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
 .venv
-.zip
-# CatBoost training logs
+
+# Node/Frontend
+node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# ML & Data
 catboost_info/
-*.pkl
-shap_values.csv
+# Ignore large raw files
+ml/data/raw/*.csv
+# Ignore huge processed files (>100MB)
+ml/data/processed/shap_values.csv
+ml/data/processed/train_processed.csv
+ml/data/processed/test_processed.csv
+
+# Keep these needed for demo:
+!ml/data/processed/shap_values_frontend.csv
+!ml/data/processed/shap_values_sample.csv
+!ml/data/processed/submission_wmae.csv
+!ml/data/processed/client_recommendations.csv
+!ml/data/processed/model_info.pkl
+!ml/data/processed/categorical_features.csv
+
+# Models
+# Keep models if they are not too huge (CatBoost models are usually small enough)

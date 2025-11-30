@@ -45,15 +45,6 @@ def preprocess_data(df):
 train, cat_cols = preprocess_data(train)
 test, _ = preprocess_data(test)
 
-# --- 3. Определение весов (CRITICAL STEP) ---
-# ⚠️ ВАЖНО: Возьми логику расчета 'w' из файла model_income_start.ipynb!
-# Обычно в хакатонах это зависит от значения таргета или сегмента.
-# Пример заглушки (если веса не заданы, WMAE = MAE):
-if 'w' not in train.columns:
-    # ПРИМЕР: Если в ноутбуке было train['w'] = 1.1, вставь это сюда.
-    # Пока ставим 1.0 для всех (обычная MAE)
-    train['w'] = 1.0
-    print("⚠️ ВНИМАНИЕ: Используются веса по умолчанию (1.0). Проверь расчет весов!")
 
 # --- 4. Подготовка к обучению ---
 X = train.drop(columns=['target', 'w', 'id']) # Удаляем лишнее

@@ -67,6 +67,17 @@ def calculate_shap():
         model = CatBoostRegressor()
         model.load_model(model_path)
         
+        # --- ROBUST CLEANUP FOR SHAP (Fixing NaNs) ---
+        print("Принудительная очистка данных для SHAP...")
+        cat_indices = model.get_cat_feature_indices()
+        # Get column names from indices
+        cat_feature_names = [X_sample.columns[i] for i in cat_indices]
+        
+        for col in cat_feature_names:
+            X_sample[col] = X_sample[col].fillna("Missing").astype(str)
+            # Also fix literal 'nan' strings if any
+            X_sample.loc[X_sample[col] == 'nan', col] = 'Missing'
+        
         # Используем приближенный SHAP для экономии памяти
         print("Вычисление приближенных SHAP значений...")
         explainer = shap.TreeExplainer(model)

@@ -4,9 +4,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { Bar } from 'react-chartjs-2';
 import { Search, Loader2, Calculator, User, RefreshCcw, Briefcase, Wallet, CreditCard, ChevronDown, ChevronUp } from 'lucide-react';
 import ParamInput from './components/ParamInput';
-import './index.css';
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+import './index.css';ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 // --- Helper Functions ---
 
@@ -116,16 +114,19 @@ const ShapChart = ({ shapData }) => {
           label: (context) => {
             const impact = context.raw;
             const direction = impact >= 0 ? '📈 увеличивает' : '📉 уменьшает';
-            return `${direction} доход на ${formatCurrency(Math.abs(impact))}`;
+            return `${direction} оценку на ${Math.abs(impact).toFixed(4)}`;
           }
         }
       }
     },
     scales: {
       x: {
-        title: { display: true, text: 'Влияние на прогноз дохода (руб.)', color: '#666' },
-        grid: { color: 'rgba(0, 0, 0, 0.1)' },
-        ticks: { callback: (value) => formatCurrency(value) }
+        title: { display: true, text: 'Сила влияния фактора (Log-шкала)', color: '#94A3B8' },
+        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+        ticks: { 
+            color: '#cbd5e1'
+        },
+        border: { display: false }
       },
       y: {
         grid: { color: 'rgba(0, 0, 0, 0.1)' }
@@ -530,11 +531,11 @@ function App() {
                            />
                          </div>
                          
-                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                         <div className="grid gap-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))' }}>
                             {Object.entries(calcForm)
                               .filter(([key]) => !isKeyFeature(key)) 
                               .filter(([key]) => key.toLowerCase().includes(advancedFilter.toLowerCase()) || formatFeatureName(key).toLowerCase().includes(advancedFilter.toLowerCase()))
-                              .slice(0, 50) // Pagination Limit: Show only first 50 matches to prevent rendering lag
+                              .slice(0, 50) 
                               .map(([key, value]) => (
                                 <ParamInput 
                                   key={key} 

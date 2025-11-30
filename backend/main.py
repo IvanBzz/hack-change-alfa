@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
+import numpy as np
 import os
 import json
 import sys
@@ -196,10 +197,40 @@ def get_client_data(client_id: str):
                 print(f"⏳ Calculating real-time SHAP for {client_id}...")
                 client_features = data_store["test_data"].loc[client_id]
                 
+                # Convert to DataFrame (1 row)
                 df_features = pd.DataFrame([client_features])
                 
+                # --- SAFETY CHECK (Same as in predict_income) ---
+                # 1. Reorder columns
+                if hasattr(data_store["model"], "feature_names_"):
+                    expected_cols = data_store["model"].feature_names_
+                    for c in expected_cols:
+                        if c not in df_features.columns:
+                            df_features[c] = 0
+                    df_features = df_features[expected_cols]
+
+                # 2. Clean Categoricals
+                if hasattr(data_store["model"], "get_cat_feature_indices"):
+                    cat_indices = data_store["model"].get_cat_feature_indices()
+                    all_columns = df_features.columns
+                    for idx in cat_indices:
+                        if idx < len(all_columns):
+                            col_name = all_columns[idx]
+                            try:
+                                val = df_features[col_name].iloc[0]
+                                if pd.api.types.is_number(val):
+                                    df_features[col_name] = str(int(val))
+                                else:
+                                    df_features[col_name] = str(val)
+                            except:
+                                df_features[col_name] = str(df_features[col_name].iloc[0])
+                
+                df_features = df_features.fillna(0)
+                
+                # Calculate SHAP
                 shap_values = data_store["explainer"].shap_values(df_features)
                 
+                # Map to dict
                 shap_dict = dict(zip(df_features.columns, shap_values[0]))
                 result["shap"] = shap_dict
                 print(f"✅ Calculated real-time SHAP for {client_id}")
@@ -276,11 +307,46 @@ def predict_income(features: dict = Body(...)):
 
         df_input = pd.DataFrame([input_data])
         
+        # 3. Preprocess
         df_processed, _ = preprocess_data(df_input)
         
-        prediction = data_store["model"].predict(df_processed)[0]
-        predicted_value = float(prediction)
+        # --- SAFETY: Reorder columns to match model expectation ---
+        if hasattr(data_store["model"], "feature_names_"):
+            expected_cols = data_store["model"].feature_names_
+            # Add missing cols with 0
+            for c in expected_cols:
+                if c not in df_processed.columns:
+                    df_processed[c] = 0
+            # Reorder
+            df_processed = df_processed[expected_cols]
 
+        # --- FINAL SAFETY CHECK (API Layer) ---
+        # Ensure all categorical features expected by CatBoost are actually strings
+        if hasattr(data_store["model"], "get_cat_feature_indices"):
+            cat_indices = data_store["model"].get_cat_feature_indices()
+            # Map indices to column names
+            all_columns = df_processed.columns
+            for idx in cat_indices:
+                if idx < len(all_columns):
+                    col_name = all_columns[idx]
+                    # Force to string, handling floats like 2024.0 -> "2024"
+                    try:
+                        val = df_processed[col_name].iloc[0]
+                        if pd.api.types.is_number(val):
+                            df_processed[col_name] = str(int(val))
+                        else:
+                            df_processed[col_name] = str(val)
+                    except:
+                        df_processed[col_name] = str(df_processed[col_name].iloc[0])
+        
+        # Ensure no NaNs in numerical columns (fill with 0 or median from defaults if possible, here 0 is safe)
+        df_processed = df_processed.fillna(0)
+
+        # 4. Predict
+        prediction = data_store["model"].predict(df_processed)[0]
+        predicted_value = float(np.expm1(prediction))
+
+        # 5. Calculate SHAP Values
         shap_dict = None
         if data_store["explainer"]:
             shap_values = data_store["explainer"].shap_values(df_processed)

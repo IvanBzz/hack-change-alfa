@@ -3,3 +3,4 @@
 # CatBoost training logs
 catboost_info/
 *.pkl
+shap_values.csv

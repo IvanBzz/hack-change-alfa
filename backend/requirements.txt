@@ -4,3 +4,10 @@ pandas
 scikit-learn
 shap
 catboost
+numpy
+matplotlib
+seaborn
+jupyter
+ipython=
+optuna
+lightgbm

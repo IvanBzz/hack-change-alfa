@@ -3,7 +3,7 @@
 
 ## 👥 Команда "Титаник 2"
 
-- **Безуглов Иван** ([@lI_ii_II_ii_Il](https://t.me/n0corner)) — Data Scientist / ML-engineer
+- **Безуглов Иван** ([@n0corner](https://t.me/n0corner)) — Data Scientist / ML-engineer
 - **Гоова Алина** ([@nase_izum](https://t.me/nase_izum)) — Frontend Developer
 - **Глущенко Даниил** ([@pfioar](https://t.me/pfioar)) — Fullstack Developer / Team Lead
 
